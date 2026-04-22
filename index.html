@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>For My Rasmalai 💗</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:Arial,sans-serif;
+min-height:100vh;
+overflow-x:hidden;
+background:linear-gradient(135deg,#ffd6e7,#ffc0da,#ffe6f0,#fff0f6);
+background-size:300% 300%;
+animation:bgmove 10s ease infinite;
+color:#6b2145;
+}
+
+@keyframes bgmove{
+0%{background-position:0% 50%}
+50%{background-position:100% 50%}
+100%{background-position:0% 50%}
+}
+
+.screen{
+min-height:100vh;
+padding:20px;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.card{
+width:100%;
+max-width:430px;
+background:rgba(255,255,255,.90);
+backdrop-filter:blur(12px);
+border-radius:28px;
+padding:22px;
+box-shadow:0 14px 35px rgba(0,0,0,.08);
+}
+
+.hidden{
+display:none !important;
+}
+
+button{
+border:none;
+border-radius:999px;
+padding:14px 20px;
+background:#ff5fa2;
+color:#fff;
+font-weight:700;
+font-size:16px;
+cursor:pointer;
+box-shadow:0 8px 18px rgba(255,95,162,.25);
+transition:.2s;
+}
+
+button:active{
+transform:scale(.96);
+}
+
+.title{
+font-size:34px;
+font-weight:900;
+text-align:center;
+color:#ff4e9b;
+}
+
+.subtitle{
+text-align:center;
+margin-top:8px;
+opacity:.8;
+font-size:18px;
+}
+
+.grid{
+margin-top:18px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+}
+
+.diary{
+margin-top:18px;
+background:#fff8fb;
+border:2px solid #ffc3dd;
+border-radius:24px;
+min-height:230px;
+padding:18px;
+font-size:20px;
+line-height:1.7;
+font-family:cursive;
+white-space:pre-wrap;
+}
+
+.footer{
+margin-top:16px;
+text-align:center;
+font-size:13px;
+opacity:.7;
+}
+
+.popup{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.35);
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+z-index:999;
+}
+
+.hearts{
+position:fixed;
+inset:0;
+pointer-events:none;
+overflow:hidden;
+z-index:1;
+}
+
+.heart{
+position:absolute;
+font-size:20px;
+animation:fly 1.5s linear forwards;
+}
+
+@keyframes fly{
+0%{opacity:1;transform:translateY(0) scale(1)}
+100%{opacity:0;transform:translateY(-120px) scale(1.8)}
+}
+
+.petal{
+position:fixed;
+top:-10vh;
+font-size:16px;
+pointer-events:none;
+animation:petalFall linear forwards;
+z-index:0;
+}
+
+@keyframes petalFall{
+0%{transform:translateY(-10vh) rotate(0deg);opacity:0}
+10%{opacity:1}
+100%{transform:translateY(110vh) translateX(40px) rotate(360deg);opacity:0}
+}
+</style>
+</head>
+
+<body>
+
+<div class="hearts" id="hearts"></div>
+<div id="petals"></div>
+
+<!-- Popup -->
+<div id="popup" class="popup">
+<div class="card" style="text-align:center;position:relative;z-index:1000;">
+
+<h2 style="font-size:30px;color:#ff4e9b;">Rasmalai 🥺💗</h2>
+<p style="margin-top:10px;font-size:20px;">Abhi bhi gussa ho...? 🥺</p>
+
+<div style="margin-top:18px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative;min-height:60px;">
+
+<button onclick="startSite()">Forgive Me 🥹</button>
+
+<button id="noBtn"
+style="position:relative;"
+onmouseenter="runNo()"
+onclick="runNo()"
+ontouchstart="runNo()">
+No 😤
+</button>
+
+</div>
+</div>
+</div>
+
+<!-- Main App -->
+<div id="app" class="screen hidden">
+
+<div class="card">
+
+<div class="title">For My Rasmalai 💗</div>
+<div class="subtitle">Tap any button below 💌</div>
+
+<div style="text-align:center;margin-top:12px;">
+<button onclick="toggleMusic()">🎵 Music</button>
+</div>
+
+<div class="grid" id="btns"></div>
+
+<div class="diary" id="diary">Choose any message 💌</div>
+
+<div class="footer">Long press anywhere for secret note 🔒</div>
+
+</div>
+</div>
+
+<script>
+const msgs = [
+
+['Sorry Na 🥺','Rasmalai, meri kisi baat ka bura laga ho ya mujhse koi galti hui ho, toh dil se sorry... kaan pakad ke sorry baccha. Please gussa chhod do na ji 💗'],
+
+['Meri Favourite Person 🌸','Aap sirf meri biwi hi nahi, meri sabse pyaari aadat ho. Main is pyaari aadat ko hamesha apne paas rakhna chahta hoon ji 🥹❤️'],
+
+['Miss You 🥺','Jab aap mujhse baat nahi karte ho na, sab kuch khali khali sa lagta hai. Kahin mann nahi lagta 🥺'],
+
+['Smile Please 😊','Biwi ji, bahut roothe roothe reh liye... ab thodi smile bhi kar do ji 🤭 Aapki smile mere din ka best part hoti hai 🥹💖'],
+
+['Promise 🤞','Main promise karta hoon ki puri life aapko apni baahon me sabse safe rakhunga. Umar badlegi, par mera pyaar nahi ❤️'],
+
+['Our Bond 💞','Hum dono ka connection bahut special hai... Fevicol se bhi strong 🤭 Maine aapka haath thaama hai babu aap bhi thaame rakhna ekdam khaas kar 🥹❤️'],
+
+['Secret Note 🔒','Main jitna words me express nahi kar pata, usse bhi zyada pyaar karta hoon aapse. Aap mera dil ho ❤️'],
+
+['Hug Button 🤗','Aao meri baahon me aa jao babu 🫂 aur ye narazgi ya jo bhi hai please ab khatam kar do 🥺 aur mujhe apni baahon me bhar lo baccha. Aapki baahon me mujhe bahut sukoon milta hai 🥹🫂'],
+
+['Forever ♾️','Hamara pyaar sirf is janam ka nahi... har janam ka hai. Main aapka hoon aur aap meri 🥹❤️'],
+
+['Final Surprise 🎁','Aao babu, aapko apni baahon me bhar loon, zulfon ko pyar se sehlaun, unlimited puchhi doon aur chocolate khilaun 🍫💖']
+
+];
+
+const btns = document.getElementById("btns");
+const diary = document.getElementById("diary");
+const popup = document.getElementById("popup");
+const app = document.getElementById("app");
+
+msgs.forEach((m,i)=>{
+let b=document.createElement("button");
+b.innerText=m[0];
+b.onclick=()=>showMsg(i);
+btns.appendChild(b);
+});
+
+let typingTimer=null;
+
+function typeText(t){
+if(typingTimer) clearInterval(typingTimer);
+
+diary.textContent="";
+let i=0;
+
+typingTimer=setInterval(()=>{
+diary.textContent += t.charAt(i);
+i++;
+
+if(i>=t.length){
+clearInterval(typingTimer);
+typingTimer=null;
+}
+},22);
+}
+
+function showMsg(i){
+burst();
+typeText(msgs[i][1]);
+}
+
+function startSite(){
+popup.classList.add("hidden");
+popup.style.display="none";
+
+app.classList.remove("hidden");
+app.style.display="flex";
+}
+
+function runNo(){
+const btn=document.getElementById("noBtn");
+
+btn.style.left=(Math.random()*160-80)+"px";
+btn.style.top=(Math.random()*70-35)+"px";
+}
+
+function burst(x=innerWidth/2,y=innerHeight/2){
+for(let i=0;i<12;i++){
+let h=document.createElement("div");
+h.className="heart";
+h.innerText="💗";
+h.style.left=(x+Math.random()*80-40)+"px";
+h.style.top=(y+Math.random()*30)+"px";
+document.getElementById("hearts").appendChild(h);
+setTimeout(()=>h.remove(),1500);
+}
+}
+
+document.body.addEventListener("click",(e)=>{
+burst(e.clientX,e.clientY);
+});
+
+let press;
+
+document.body.addEventListener("touchstart",()=>{
+press=setTimeout(()=>{
+alert("Tum meri sabse pyaari aadat ho 💗");
+},700);
+});
+
+document.body.addEventListener("touchend",()=>{
+clearTimeout(press);
+});
+
+function makePetal(){
+let p=document.createElement("div");
+p.className="petal";
+p.innerText="🌸";
+p.style.left=Math.random()*100+"vw";
+p.style.animationDuration=(4+Math.random()*5)+"s";
+document.getElementById("petals").appendChild(p);
+setTimeout(()=>p.remove(),9000);
+}
+
+setInterval(makePetal,900);
+
+let audioCtx=null;
+
+function toggleMusic(){
+if(!audioCtx){
+audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+}
+
+const o=audioCtx.createOscillator();
+const g=audioCtx.createGain();
+
+o.type="sine";
+o.frequency.value=523;
+
+o.connect(g);
+g.connect(audioCtx.destination);
+
+g.gain.value=.01;
+
+o.start();
+
+setTimeout(()=>{
+o.stop();
+},350);
+}
+</script>
+
+</body>
+</html>
